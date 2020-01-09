@@ -1,0 +1,29 @@
+.textarea{
+    padding: 100px;;
+    border: 2px solid;
+    position: relative;
+    width: 400px;
+}
+span.width-resizer, span.height-resizer {
+    display: block;
+    position: absolute;
+    
+    margin: 0;
+    padding: 0;
+    cursor: col-resize;
+    border: 1px solid transparent;
+}
+
+span.width-resizer {
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+}
+
+span.height-resizer {
+    bottom: 0;
+    left: 0;
+    height: 8px;
+    width: 100%;
+}
