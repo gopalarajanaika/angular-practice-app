@@ -12,10 +12,6 @@ export class SidebarComponent implements OnInit {
   constructor(public sharedService: SharedService) { }
 
   ngOnInit() {
-    // $("html, body").on("click", ".sidebar", (e)=>{
-    //   e.stopPropagation();
-    //   console.log("Clicked on sidebar");
-    // })
   }
 
   @HostListener('document:click', ['$event'])
