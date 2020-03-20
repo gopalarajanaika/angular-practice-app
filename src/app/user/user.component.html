@@ -1,0 +1,9 @@
+<h1>User</h1>
+<p>Useer: {{user}}</p>
+
+<input type="text" name="user" [(ngModel)]="user" (ngModelChange)="changeValue()">
+<br>
+<button>click</button>
+<br><br>
+<div>counter: {{counter}}</div>
+<button (click)="nextCount()">Count next</button>
