@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { UserService } from '../user.service';
 
 @Component({
@@ -8,17 +8,10 @@ import { UserService } from '../user.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private user: UserService) { }
+  constructor(@Inject(UserService) private userService) { }
 
   ngOnInit() {
-
-}
-
-
-
-
-
-
-
+    console.log(this.userService);
+  }
 
 }
