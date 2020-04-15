@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../user.service';
+import { UserService } from '../../services/user.service';
 import { fromEvent } from "rxjs";
 
 @Component({
@@ -9,6 +9,7 @@ import { fromEvent } from "rxjs";
 })
 export class UserComponent implements OnInit {
 
+  unsavedChanges = true;
   constructor() { }
 
   ngOnInit() {

@@ -4,26 +4,26 @@ Observable has create function
 obs can accept parameter so we can call all next, error, complete methods
 
 <script>
-    // observable
+  // observable
 
-    export class HomeComponent implements OnInit {
+  export class HomeComponent implements OnInit {
 
-        // observable = Observable.create(oberver => oberver.next("pass a data"));
-        observable = new Observable(oberver => {
-            oberver.next("pass a data")
-            oberver.next("pass a data2")
-        });
-        subject = new Subject();
-        constructor() { }
+    // observable = Observable.create(oberver => oberver.next("pass a data"));
+    observable = new Observable(oberver => {
+      oberver.next("pass a data")
+      oberver.next("pass a data2")
+    });
+    subject = new Subject();
+    constructor() { }
 
-        ngOnInit() {
-            this.subject.subscribe(res => console.log(res))
-            this.subject.next("data frm subject");
-            this.subject.next("data2 frm subject");
-            this.observable.subscribe(res => console.log(res));
-        }
-
+    ngOnInit() {
+      this.subject.subscribe(res => console.log(res))
+      this.subject.next("data frm subject");
+      this.subject.next("data2 frm subject");
+      this.observable.subscribe(res => console.log(res));
     }
+
+  }
 </script>
 
 share data bw unrelated components using Subject
@@ -38,12 +38,12 @@ share data bw unrelated components using Subject
 <!-- home component end -->
 
 
- <!-- users -->
+<!-- users -->
 
 <script>
-    user:string;
-  counter:number;
-  constructor(private userService: UserService) {   }
+  user: string;
+  counter: number;
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.userService.userSubject.subscribe(user => this.user = user);
@@ -54,8 +54,8 @@ share data bw unrelated components using Subject
     this.userService.changeValue(this.user);
   }
 
-//   user comp
-user: string;
+  //   user comp
+  user: string;
   counter: number;
   constructor(private userService: UserService) { }
 
@@ -96,12 +96,12 @@ user: string;
 <script>
   userSubject = new BehaviorSubject(null);
   counterSubject = new Subject<number>();
-  observable = new Observable(subscriber=>{
+  observable = new Observable(subscriber => {
     subscriber.next(2);
     subscriber.next("right");
   })
   count = 0;
-  constructor() { 
+  constructor() {
   }
 
   changeValue(user) {
@@ -114,5 +114,101 @@ user: string;
 
 </script>
 
+<!-- ******************directive**************** -->
+
+<script>
+  import { Directive, ElementRef, Input, HostListener, OnInit, AfterViewInit } from '@angular/core';
+
+  @Directive({
+    selector: '[app-page-title]'
+  })
+  export class PageTitleDirective implements OnInit {
+    @Input('dataValue') dataValue: number;
+
+    constructor(private el: ElementRef) {
+      // console.log("Directive");
+    }
+
+    ngOnInit(): void {
+      // console.log(this.dataValue);
+      this.el.nativeElement.innerHTML = `Value is ${this.dataValue}`;
+    }
+
+    @HostListener('click') clickedMe() {
+      console.log(this.dataValue);
+    }
+
+    ngAfterViewInit(): void {
+      // console.log(this.dataColor);
+      if (this.dataValue >= 75) {
+        this.el.nativeElement.style.backgroundColor = 'green';
+      } else if (this.dataValue >= 50) {
+        this.el.nativeElement.style.backgroundColor = 'yellow';
+      } else {
+        this.el.nativeElement.style.backgroundColor = 'red';
+      }
+    }
+
+  }
+
+</script>
+<!-- ********************** -->
+
+<!-- structural directive for loop-->
+
+<!-- html -->
+<div *appNgFor="let item of list">{{item.name}} - {{item.profession}}</div>
+<script>
+  list: any = [
+    { 'name': 'Gopal', 'age': 32, 'profession': 'software developer' },
+    { 'name': 'Raja', 'age': 45, 'profession': 'software tester' }
+  ]
+</script>
+<!-- ts -->
+<script>
+  import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+  @Directive({
+    selector: '[appNgFor]'
+  })
+  export class NgForDirective {
+    @Input() appNgForOf: any = [];
+    constructor(private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) { }
+
+    ngOnInit() {
+      console.log(this.appNgForOf);
+      for (const input of this.appNgForOf) {
+        this.viewContainerRef.createEmbeddedView(this.templateRef, {
+          $implicit: input, index: this.appNgForOf.indexOf(input)
+        });
+      }
+    }
+  }
+</script>
+<!-- ********************************* -->
+
+<!-- structural directive if condition-->
+
+<!-- html -->
+<h1 *appNgIf="true">I am Visible</h1>
+<h1 *appNgIf="false">I am not visible</h1>
+
+<script>
+  import { Directive, Input, ViewContainerRef, TemplateRef } from '@angular/core';
+  @Directive({
+    selector: '[appNgIf]'
+  })
+  export class PageTitleDirective {
+
+    @Input() set appNgIf(condition: boolean) {
+      if (condition) {
+        this.viewContainerRef.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainerRef.clear();
+      }
+    }
+    constructor(private viewContainerRef: ViewContainerRef, private templateRef: TemplateRef<any>) { }
 
 
+  }
+</script>
+<!-- ********************************* -->
